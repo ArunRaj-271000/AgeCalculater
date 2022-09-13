@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+</head>
+<body>
+    <h2>
+        Calculate
+        
+    </h2>
+
+    <input id="dtpBirthDate" autocomplete="off"  class="input-group" />
+    <br />
+    <button type="button" id="btnCalculate" > Calculate Age</button>
+    <br />
+    <div id="divHtml"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#dtpBirthDate").datepicker({
+                dateFormat: 'dd-mm-yy'
+            });
+
+            $("#btnCalculate").click(function () {
+                var date1 = $('#dtpBirthDate').val();
+                var dt = date1.split("-");
+                var dtt = new Date(dt[2],dt[1]-1,dt[0]);
+                var data = { date: dtt };
+                debugger;
+                var json = JSON.stringify(data);
+
+                $.ajax({
+                    url: 'http://cps038:5001/api/Home/GetDetails',
+                    type: "POST",
+                    data: json,
+                    contentType: "application/json; charset=utf-16",
+                    dataType: "json",
+                    success: function (result) {
+                        $("#divHtml").html(result.calculatedAge);
+                        return false;
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+
+</body>
+</html>

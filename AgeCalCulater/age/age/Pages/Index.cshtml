@@ -1,0 +1,55 @@
+﻿@*page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+  <html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>
+        Calculate age
+    </h2>
+
+    <input id="dtpBirthDate" placeholder="Enter Your Age" autocomplete="off" class="input-group" />
+    <br />
+    <button type="button" id="btnCalculate"> Calculate Age</button>
+    <br />
+    <div id="age"></div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#dtpBirthDate").datepicker({
+                dateFormat: 'dd-mm-yy'
+            });
+
+            $("#btnCalculate").click(function () {
+                var date = $('#dtpBirthDate');
+                var data = { date: date.val() };
+                var json = JSON.stringify(data);
+                $.ajax({
+                    url: '/Home/GetDetails',
+                    type: "POST",
+                    data: json,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        $("#age").html(result.calculatedAge);
+                        return false;
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+</body>
+*@</html>
